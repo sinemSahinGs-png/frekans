@@ -8,16 +8,20 @@ import { cn } from "@/lib/utils";
 
 type Props = {
   slug: string;
+  image?: string;
+  imageAlt?: string;
   sizes: string;
   className?: string;
   priority?: boolean;
   showIndex?: string;
 };
 
-export function ProductVisual({ slug, sizes, className, priority, showIndex }: Props) {
+export function ProductVisual({ slug, image, imageAlt, sizes, className, priority, showIndex }: Props) {
   const asset = getProductAsset(slug);
+  const src = image || asset?.src;
+  const alt = imageAlt || asset?.alt || "";
   const [failed, setFailed] = useState(false);
-  const showPhoto = Boolean(asset) && !failed;
+  const showPhoto = Boolean(src) && !failed;
 
   return (
     <div
@@ -35,10 +39,10 @@ export function ProductVisual({ slug, sizes, className, priority, showIndex }: P
       }
     >
       <ProductWaveFallback className="absolute inset-0 h-full w-full opacity-70" />
-      {asset && showPhoto ? (
+      {src && showPhoto ? (
         <Image
-          src={asset.src}
-          alt={asset.alt}
+          src={src}
+          alt={alt}
           fill
           sizes={sizes}
           priority={priority}

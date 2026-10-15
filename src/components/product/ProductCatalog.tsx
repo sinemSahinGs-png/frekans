@@ -43,6 +43,8 @@ export function ProductCatalog({ products, categories }: { products: Product[]; 
           >
             <ProductVisual
               slug={p.slug}
+              image={p.image}
+              imageAlt={p.imageAlt}
               showIndex={p.number}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="aspect-[5/4] rounded-none border-0"

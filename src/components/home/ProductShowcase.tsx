@@ -2,42 +2,20 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
 import { ProductVisual } from "@/components/product/ProductVisual";
+import { useCms } from "@/lib/cms/cms-context";
 import { cn } from "@/lib/utils";
-
-const featuredCopy: Record<
-  string,
-  { category: string; description: string; secondaryLabel: string }
-> = {
-  "new-human-power": {
-    category: "Laboratuvar Su Sistemleri",
-    description:
-      "Reverse osmoz ve saf su ihtiyaçlarını tek sistem yaklaşımında bir araya getiren laboratuvar su çözümü.",
-    secondaryLabel: "TEKNİK BİLGİ İSTE",
-  },
-  "labtech-chiller": {
-    category: "Sıcaklık Kontrolü",
-    description: "Hassas sıcaklık kontrolü gerektiren laboratuvar uygulamaları için tasarlanmış kompakt chiller çözümü.",
-    secondaryLabel: "TEKLİF AL",
-  },
-  "xray-flux": {
-    category: "XRF Numune Hazırlama",
-    description: "XRF numune hazırlama süreçlerinde kullanılan lityum tetraborat bazlı ergitme kimyasalları.",
-    secondaryLabel: "BİLGİ İSTE",
-  },
-};
 
 export function ProductShowcase() {
   const reduce = useReducedMotion();
+  const { products } = useCms();
 
   return (
     <section className="bg-[var(--frekans-offwhite)] py-12 md:py-16">
       <div className="container-wide">
         <div className="space-y-16 md:space-y-24">
           {products.map((p, i) => {
-            const copy = featuredCopy[p.slug];
             const reverse = i % 2 === 1;
             return (
               <motion.article
@@ -55,20 +33,22 @@ export function ProductShowcase() {
               >
                 <ProductVisual
                   slug={p.slug}
+                  image={p.image}
+                  imageAlt={p.imageAlt}
                   showIndex={p.number}
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 60vw"
                   className="aspect-[4/3] min-h-[220px] w-full md:aspect-[5/4] md:min-h-[380px] xl:min-h-[480px]"
                 />
                 <div>
-                  <p className="eyebrow">{copy?.category ?? p.category}</p>
+                  <p className="eyebrow">{p.featuredCategory || p.category}</p>
                   <h3 className="product-title mt-3 text-[var(--frekans-navy)]">{p.title}</h3>
                   <p className="mt-4 max-w-lg text-[17px] text-[var(--frekans-muted)] md:text-[18px]">
-                    {copy?.description ?? p.short}
+                    {p.featuredDescription || p.short}
                   </p>
                   <div className="mt-7 flex flex-wrap gap-3">
                     <Button href={`/urunler/${p.slug}`}>ÜRÜNÜ İNCELE</Button>
                     <Button href={`/iletisim?urun=${p.slug}`} variant="secondary">
-                      {copy?.secondaryLabel ?? "TEKLİF AL"}
+                      TEKLİF AL
                     </Button>
                   </div>
                 </div>

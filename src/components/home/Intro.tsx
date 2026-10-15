@@ -1,16 +1,11 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-
-const items = [
-  { n: "01", t: "Laboratuvar cihazları", d: "Mevcut katalogdaki sistemler ve sarf çözümleri." },
-  { n: "02", t: "Teknik çözüm", d: "İhtiyaca uygun cihaz ve uygulama yönlendirmesi." },
-  { n: "03", t: "Uygulama desteği", d: "Kullanım ve süreç eşliğinde teknik iletişim." },
-  { n: "04", t: "Satış sonrası destek", d: "Kurulum, bakım ve teknik servis yaklaşımı." },
-];
+import { useCms } from "@/lib/cms/cms-context";
 
 export function Intro() {
   const reduce = useReducedMotion();
+  const { intro: items } = useCms();
 
   return (
     <section className="relative bg-white py-12 md:py-16">

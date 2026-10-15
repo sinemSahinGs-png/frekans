@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
+import { useCms } from "@/lib/cms/cms-context";
 import { submitContact } from "@/services/contact/submit-contact";
 
 export function ContactForm() {
+  const { products } = useCms();
   const searchParams = useSearchParams();
   const defaultProduct = searchParams.get("urun") ?? "";
 

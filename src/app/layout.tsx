@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Inter_Tight, Manrope } from "next/font/google";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { ScrollProgress } from "@/components/visual/ScrollProgress";
-import { PageTransition } from "@/components/motion/PageTransition";
-import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { CmsProvider } from "@/lib/cms/cms-context";
+import { getCms } from "@/lib/cms/store";
+import { SiteChrome } from "@/components/layout/SiteChrome";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -47,23 +45,19 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://frekanslab.com.tr" },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const cms = await getCms();
   return (
     <html
       lang="tr"
       className={`${interTight.variable} ${manrope.variable} ${ibm.variable} h-full`}
     >
       <body className="min-h-full bg-white text-[var(--frekans-text)] antialiased">
-        <SmoothScroll>
-          <ScrollProgress />
-          <Header />
-          <PageTransition>
-            <main className="relative">{children}</main>
-          </PageTransition>
-          <Footer />
-        </SmoothScroll>
+        <CmsProvider content={cms}>
+          <SiteChrome>{children}</SiteChrome>
+        </CmsProvider>
       </body>
     </html>
   );

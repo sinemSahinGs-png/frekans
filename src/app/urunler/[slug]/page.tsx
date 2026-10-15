@@ -1,30 +1,37 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getProduct, products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
 import { ProductVisual } from "@/components/product/ProductVisual";
+import { cmsProductToProduct } from "@/lib/cms/map";
+import { getCms } from "@/lib/cms/store";
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  const cms = await getCms();
+  return cms.products.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const cms = await getCms();
+  const product = cms.products.find((p) => p.slug === slug);
   if (!product) return { title: "Urun" };
   return { title: product.title, description: product.short };
 }
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProduct(slug);
-  if (!product) notFound();
+  const cms = await getCms();
+  const found = cms.products.find((p) => p.slug === slug);
+  if (!found) notFound();
+  const product = cmsProductToProduct(found);
 
   return (
     <div className="container-wide grid gap-12 pb-24 pt-28 lg:grid-cols-[1.05fr_0.95fr] md:pt-32">
       <div className="lg:sticky lg:top-28 lg:self-start">
         <ProductVisual
           slug={product.slug}
+          image={product.image}
+          imageAlt={product.imageAlt}
           showIndex={product.number}
           sizes="(max-width: 768px) 100vw, 55vw"
           className="aspect-[4/3] min-h-[240px] md:aspect-[5/4] md:min-h-[420px]"

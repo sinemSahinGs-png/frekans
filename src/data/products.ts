@@ -14,6 +14,8 @@ export type Product = {
   applications: string[];
   specs: ProductSpec[];
   accent: "green" | "navy";
+  image?: string;
+  imageAlt?: string;
 };
 
 export const products: Product[] = [

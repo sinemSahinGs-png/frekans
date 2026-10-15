@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { products } from "@/data/products";
+import { getCms } from "@/lib/cms/store";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = "https://frekanslab.com.tr";
+  const cms = await getCms();
   const staticRoutes = ["", "/urunler", "/uygulamalar", "/teknik-servis", "/hakkimizda", "/dokumanlar", "/iletisim"];
   return [
     ...staticRoutes.map((p) => ({ url: `${base}${p}`, changeFrequency: "monthly" as const, priority: p === "" ? 1 : 0.7 })),
-    ...products.map((p) => ({ url: `${base}/urunler/${p.slug}`, changeFrequency: "monthly" as const, priority: 0.8 })),
+    ...cms.products.map((p) => ({ url: `${base}/urunler/${p.slug}`, changeFrequency: "monthly" as const, priority: 0.8 })),
   ];
 }

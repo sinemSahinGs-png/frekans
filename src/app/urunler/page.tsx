@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { products } from "@/data/products";
-import { categories } from "@/data/categories";
 import { ProductCatalog } from "@/components/product/ProductCatalog";
+import { cmsCategories, cmsProducts } from "@/lib/cms/map";
+import { getCms } from "@/lib/cms/store";
 
 export const metadata: Metadata = {
   title: "Urunler",
   description: "Frekans laboratuvar cozumleri: saf su, chiller ve XRF sarf malzemeleri.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const cms = await getCms();
+  const products = cmsProducts(cms);
+  const categories = cmsCategories(cms);
   return (
     <div className="container-wide pb-24 pt-28 md:pt-32">
       <p className="eyebrow mb-4">KATALOG</p>

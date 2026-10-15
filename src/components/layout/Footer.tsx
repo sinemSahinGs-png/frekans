@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { FrekansLogo } from "@/components/brand/FrekansLogo";
-import { site } from "@/data/site";
-import { products } from "@/data/products";
+import { useCms } from "@/lib/cms/cms-context";
+import { addressLines, emailHref, phoneHref } from "@/lib/cms/map";
 
 export function Footer() {
+  const cms = useCms();
+  const { contact, products, footerNote } = cms;
   return (
     <footer className="border-t border-[var(--frekans-border)] bg-[var(--frekans-offwhite)]">
       <div className="container-wide py-12 md:py-16">
@@ -11,7 +15,7 @@ export function Footer() {
           <div>
             <FrekansLogo />
             <p className="mt-5 max-w-xs text-sm text-[var(--frekans-muted)]">
-              Laboratuvar cihazları, teknik çözümler ve uygulama desteği.
+              {footerNote}
             </p>
           </div>
           <div>
@@ -38,16 +42,16 @@ export function Footer() {
           <div>
             <p className="eyebrow mb-4">İLETİŞİM</p>
             <ul className="space-y-2 text-sm text-[var(--frekans-muted)]">
-              <li><a href={site.emailHref}>{site.email}</a></li>
-              <li><a href={site.phoneHref}>{site.phone}</a></li>
-              {site.addressLines.map((line) => (
+              <li><a href={emailHref(contact.email)}>{contact.email}</a></li>
+              <li><a href={phoneHref(contact.phone)}>{contact.phone}</a></li>
+              {addressLines(contact.address).map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>
           </div>
         </div>
         <p className="mt-12 border-t border-[var(--frekans-border)] pt-6 font-mono text-[0.65rem] tracking-[0.14em] text-[var(--frekans-muted)]">
-          {site.legalName}
+          {contact.legalName}
         </p>
       </div>
     </footer>

@@ -1,16 +1,17 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { applications } from "@/data/applications";
+import { useCms } from "@/lib/cms/cms-context";
 
 export function Applications() {
   const reduce = useReducedMotion();
+  const { applications, applicationsHeading } = useCms();
   return (
     <section className="py-10 md:py-14">
       <div className="container-wide">
         <p className="eyebrow mb-2">UYGULAMA ALANLARI</p>
         <h2 className="font-display text-3xl tracking-tight text-[var(--frekans-navy)] md:text-4xl">
-          Numune, hazırlık, analiz, sonuç.
+          {applicationsHeading}
         </h2>
         <div className="mt-6 grid gap-4 border-t border-[var(--frekans-border)] pt-6 md:grid-cols-2 lg:grid-cols-5 lg:gap-5">
           {applications.map((app, i) => (

@@ -1,0 +1,100 @@
+import type { CmsContent } from "@/lib/cms/types";
+
+export const defaultCms: CmsContent = {
+  contact: {
+    legalName: "FREKANS TEKNİK CİHAZLAR LTD. ŞTİ.",
+    email: "info@frekanslab.com",
+    phone: "+90 (212) 272 43 63",
+    address: "Mecidiye Mah. Bestekar Şevki Bey Sokak\nNo:36/2\nBalmumcu 34335\nBeşiktaş / İSTANBUL / TÜRKİYE",
+    mapsQuery: "Mecidiye Mah. Bestekar Şevki Bey Sokak No:36/2 Balmumcu Beşiktaş İstanbul",
+  },
+  hero: {
+    eyebrow: "LABORATORY / PRECISION / SIGNAL",
+    titleLine1: "Laboratuvarınıza",
+    titleLine2: "uygun frekans.",
+    subtitle: "Laboratuvar cihazları, teknik çözümler ve uygulama desteği için güvenilir teknoloji ortağınız.",
+    primaryCta: "ÜRÜNLERİ KEŞFET",
+    secondaryCta: "BİZE ULAŞIN",
+    tags: "SAF SU, CHILLER, XRF SARF",
+    videoUrl: "/hero.mp4",
+  },
+  intro: [
+    { n: "01", t: "Laboratuvar cihazları", d: "Mevcut katalogdaki sistemler ve sarf çözümleri." },
+    { n: "02", t: "Teknik çözüm", d: "İhtiyaca uygun cihaz ve uygulama yönlendirmesi." },
+    { n: "03", t: "Uygulama desteği", d: "Kullanım ve süreç eşliğinde teknik iletişim." },
+    { n: "04", t: "Satış sonrası destek", d: "Kurulum, bakım ve teknik servis yaklaşımı." },
+  ],
+  products: [
+    {
+      slug: "new-human-power",
+      number: "01",
+      title: "New Human Power",
+      category: "Saf Su Sistemleri",
+      categorySlug: "saf-su-sistemleri",
+      short: "Reverse Ozmoz ve Saf Su bir arada!",
+      overview:
+        "Reverse ozmoz ve saf su üretimini aynı sistemde birleştiren laboratuvar su çözümü. Teknik ayrıntılar ve kapasite değerleri talep üzerine paylaşılır.",
+      applications: "Analitik laboratuvarlar\nÜniversite ve araştırma laboratuvarları\nKalite kontrol",
+      featuredCategory: "Laboratuvar Su Sistemleri",
+      featuredDescription:
+        "Reverse osmoz ve saf su ihtiyaçlarını tek sistem yaklaşımında bir araya getiren laboratuvar su çözümü.",
+      image: "/Premium laboratuvar su arıtma cihazı.png",
+      imageAlt: "New Human Power laboratuvar su arıtma sistemi",
+    },
+    {
+      slug: "labtech-chiller",
+      number: "02",
+      title: "Labtech Chiller",
+      category: "Chiller Sistemleri",
+      categorySlug: "chiller-sistemleri",
+      short:
+        "Gelişmiş enerji tasarrufu, hassas sıcaklık kontrolü, sessiz ve güçlü performans, çevre dostu yapısı ve dayanıklılığıyla, fiyatına kıyasla piyasadaki en yüksek toplam kaliteyi sunar.",
+      overview:
+        "Laboratuvar cihazları için soğutma ihtiyacına yönelik chiller çözümü. Enerji tasarrufu, hassas sıcaklık kontrolü ve sessiz çalışma vurgusu mevcut şirket anlatımına dayanır. Sayısal performans değerleri bu sitede yer almaz; teknik bilgi talebiyle iletilir.",
+      applications: "Analitik cihaz soğutması\nEndüstriyel laboratuvarlar\nAraştırma altyapısı",
+      featuredCategory: "Sıcaklık Kontrolü",
+      featuredDescription: "Hassas sıcaklık kontrolü gerektiren laboratuvar uygulamaları için tasarlanmış kompakt chiller çözümü.",
+      image: "/Premium Laboratuvar Soğutucusu.png",
+      imageAlt: "Labtech Chiller laboratuvar sıcaklık kontrol cihazı",
+    },
+    {
+      slug: "xray-flux",
+      number: "03",
+      title: "XRay Flux",
+      category: "XRF Sarf Malzemeleri",
+      categorySlug: "xrf-sarf",
+      short: "Lityum Tetraborat ile XRF cihazlarınız için eritiş kimyasalları",
+      overview: "XRF sistemleri için lityum tetraborat bazlı eritiş kimyasalları. Kullanım ve uyumluluk bilgisi uygulama desteği kapsamında paylaşılır.",
+      applications: "XRF uygulamaları\nKalite kontrol\nAnalitik laboratuvarlar",
+      featuredCategory: "XRF Numune Hazırlama",
+      featuredDescription: "XRF numune hazırlama süreçlerinde kullanılan lityum tetraborat bazlı ergitme kimyasalları.",
+      image: "/XRay Flux Laboratuvar Şişeleri.png",
+      imageAlt: "XRay Flux XRF numune hazırlama ergitme kimyasalları",
+    },
+  ],
+  applicationsHeading: "Numune, hazırlık, analiz, sonuç.",
+  applications: [
+    { slug: "analitik", title: "Analitik Laboratuvarlar", text: "Cihaz, su ve soğutma ihtiyaçları için teknik çözüm ve uygulama desteği." },
+    { slug: "arastirma", title: "Üniversiteler ve Araştırma", text: "Araştırma altyapısına uygun laboratuvar teknolojisi ve satış sonrası destek." },
+    { slug: "endustri", title: "Endüstriyel Laboratuvarlar", text: "Üretim ve proses laboratuvarları için cihaz ve sarf malzeme yaklaşımı." },
+    { slug: "kalite", title: "Kalite Kontrol", text: "Ölçüm ve analiz süreçlerinde güvenilir ekipman ve uygulama eşliği." },
+    { slug: "xrf", title: "XRF Uygulamaları", text: "Eritiş kimyasalları ve XRF odaklı sarf çözümleri." },
+  ],
+  services: {
+    title: "Teknik destek cihaz kadar önemlidir.",
+    body: "Kurulum, teknik destek, uygulama desteği ve bakım yaklaşımı. Kapsam, mevcut ürün ve ihtiyaca göre görüşülür.",
+    items: "Kurulum\nTeknik Destek\nUygulama Desteği\nBakım",
+  },
+  about: {
+    eyebrow: "FREKANS HAKKINDA",
+    heading1: "Takım ruhu.",
+    heading2: "Yapıcı yaklaşım.",
+    body: "FREKANS TEKNİK CİHAZLAR LTD.ŞTİ takım ruhu çerçevesinde çalışanlarımıza verdiğimiz değer ile ekibimizin mutluluğunu sağlamaktır. Yansıması olarak da müşterilerimize her zaman güler yüzlü ve yapıcı yaklaşımlarla sorun gidermede yardımcı olmak temel felsefemizdir.",
+    extra: "Laboratuvar cihazları, teknik çözümler ve uygulama desteği alanında İstanbul Beşiktaş merkezli çalışırız.",
+    image: "/about-frekans-lab.jpg",
+  },
+  contactCta: {
+    title: "Laboratuvarınız için doğru çözümü konuşalım.",
+  },
+  footerNote: "Laboratuvar cihazları, teknik çözümler ve uygulama desteği.",
+};

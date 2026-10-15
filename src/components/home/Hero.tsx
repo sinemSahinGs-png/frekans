@@ -3,9 +3,13 @@
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
+import { useCms } from "@/lib/cms/cms-context";
+import { splitLines } from "@/lib/cms/map";
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const { hero } = useCms();
+  const tags = splitLines(hero.tags);
   const ref = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -40,6 +44,7 @@ export function Hero() {
   return (
     <section ref={ref} className="relative min-h-[90svh] overflow-hidden bg-[var(--frekans-navy-deep)] pt-24 md:min-h-[100svh]">
       <video
+        key={hero.videoUrl}
         ref={videoRef}
         className="absolute inset-0 h-full w-full object-cover"
         autoPlay={!reduce}
@@ -49,7 +54,7 @@ export function Hero() {
         preload="auto"
         aria-hidden
       >
-        <source src="/hero.mp4" type="video/mp4" />
+        <source src={hero.videoUrl || "/hero.mp4"} type="video/mp4" />
       </video>
       <div
         className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[var(--frekans-navy-deep)]/82 via-[var(--frekans-navy-deep)]/55 to-[var(--frekans-navy)]/30"
@@ -71,11 +76,11 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.1, duration: 0.5 }}
           >
-            LABORATORY / PRECISION / SIGNAL
+            {hero.eyebrow}
           </motion.p>
           <h1 className="hero-title text-white">
-            {["Laboratuvarınıza", "uygun frekans."].map((line, i) => (
-              <span key={line} className="block overflow-hidden">
+            {[hero.titleLine1, hero.titleLine2].map((line, i) => (
+              <span key={`${line}-${i}`} className="block overflow-hidden">
                 <motion.span
                   className="block"
                   initial={reduce ? false : { y: "110%", opacity: 0, filter: "blur(4px)" }}
@@ -93,7 +98,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.95, duration: 0.6 }}
           >
-            Laboratuvar cihazları, teknik çözümler ve uygulama desteği için güvenilir teknoloji ortağınız.
+            {hero.subtitle}
           </motion.p>
           <motion.div
             className="mt-8 flex flex-wrap gap-3"
@@ -102,14 +107,14 @@ export function Hero() {
             transition={{ delay: 2.15, duration: 0.55 }}
           >
             <Button href="/urunler" className="bg-white text-[var(--frekans-navy)] hover:bg-[var(--frekans-green)] hover:text-white">
-              ÜRÜNLERİ KEŞFET
+              {hero.primaryCta}
             </Button>
             <Button
               href="/iletisim"
               variant="secondary"
               className="border-white/30 bg-white/8 text-white hover:border-white hover:bg-white hover:text-[var(--frekans-navy)]"
             >
-              BİZE ULAŞIN
+              {hero.secondaryCta}
             </Button>
           </motion.div>
           <motion.div
@@ -118,9 +123,9 @@ export function Hero() {
             animate={{ opacity: 1 }}
             transition={{ delay: 2.4 }}
           >
-            <span>SAF SU</span>
-            <span>CHILLER</span>
-            <span>XRF SARF</span>
+            {tags.map((tag) => (
+              <span key={tag}>{tag}</span>
+            ))}
           </motion.div>
         </div>
       </motion.div>
