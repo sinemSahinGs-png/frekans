@@ -1,14 +1,12 @@
 import Link from "next/link";
 import { FrekansLogo } from "@/components/brand/FrekansLogo";
-import { FrekansWave } from "@/components/visual/FrekansWave";
 import { site } from "@/data/site";
 import { products } from "@/data/products";
 
 export function Footer() {
   return (
     <footer className="border-t border-[var(--frekans-border)] bg-[var(--frekans-offwhite)]">
-      <div className="container-wide py-16">
-        <FrekansWave variant="footer" amplitude={0.35} className="mb-12 opacity-70" />
+      <div className="container-wide py-12 md:py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <FrekansLogo />

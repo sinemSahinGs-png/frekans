@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/Button";
-import { FrekansWave } from "@/components/visual/FrekansWave";
 
 const nodes = [
   { n: "01", t: "Kurulum" },
@@ -14,8 +13,7 @@ export function ServiceSection() {
       <div className="container-wide">
         <p className="eyebrow mb-4 !text-white/50">TEKNİK SERVİS</p>
         <h2 className="section-title max-w-4xl">Teknik destek cihaz kadar önemlidir.</h2>
-        <FrekansWave variant="divider" amplitude={0.4} className="my-10 opacity-80" />
-        <div className="grid gap-8 md:grid-cols-4">
+        <div className="mt-10 grid gap-8 md:grid-cols-4">
           {nodes.map((n) => (
             <div key={n.n} className="border-t border-white/15 pt-5">
               <p className="font-mono text-xs text-[var(--frekans-green-bright)]">{n.n}</p>

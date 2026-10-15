@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getProduct, products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
+import { ProductVisual } from "@/components/product/ProductVisual";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -22,12 +23,12 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
   return (
     <div className="container-wide grid gap-12 pb-24 pt-28 lg:grid-cols-[1.05fr_0.95fr] md:pt-32">
       <div className="lg:sticky lg:top-28 lg:self-start">
-        <div className="relative aspect-[5/4] overflow-hidden rounded-[10px] border border-[var(--frekans-border)] bg-[var(--frekans-lab)]">
-          <svg viewBox="0 0 400 320" className="h-full w-full" aria-hidden>
-            <rect x="60" y="60" width="280" height="200" rx="6" fill="none" stroke="#0B2857" strokeOpacity="0.25" />
-            <path d="M80 180 C140 110, 200 250, 250 150 C300 70, 340 210, 370 140" fill="none" stroke="#00A84F" strokeWidth="2.2" />
-          </svg>
-        </div>
+        <ProductVisual
+          slug={product.slug}
+          showIndex={product.number}
+          sizes="(max-width: 768px) 100vw, 55vw"
+          className="aspect-[4/3] min-h-[240px] md:aspect-[5/4] md:min-h-[420px]"
+        />
       </div>
       <div>
         <p className="eyebrow">{product.category}</p>

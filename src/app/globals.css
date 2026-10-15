@@ -145,3 +145,35 @@ body {
   outline: 2px solid var(--frekans-green);
   outline-offset: 3px;
 }
+
+.product-photo {
+  object-fit: cover;
+  object-position: var(--pos-m, 50% 50%);
+}
+
+@media (min-width: 768px) {
+  .product-photo {
+    object-position: var(--pos-d, 50% 50%);
+  }
+}
+
+.product-signal {
+  transform: scaleX(0);
+}
+
+.product-row-staged {
+  opacity: 0;
+  visibility: hidden;
+}
+
+[data-intro-step]:not(:first-child) {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-row-staged,
+  [data-intro-step] {
+    opacity: 1;
+    visibility: visible;
+  }
+}

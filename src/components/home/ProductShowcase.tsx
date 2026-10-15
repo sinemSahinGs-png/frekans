@@ -1,55 +1,142 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
 import { products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
-import { MaskedHeading } from "@/components/motion/MaskedHeading";
+import { ProductVisual } from "@/components/product/ProductVisual";
 import { cn } from "@/lib/utils";
+
+const featuredCopy: Record<
+  string,
+  { category: string; description: string; secondaryLabel: string }
+> = {
+  "new-human-power": {
+    category: "Laboratuvar Su Sistemleri",
+    description:
+      "Reverse osmoz ve saf su ihtiyaçlarını tek sistem yaklaşımında bir araya getiren laboratuvar su çözümü.",
+    secondaryLabel: "TEKNİK BİLGİ İSTE",
+  },
+  "labtech-chiller": {
+    category: "Sıcaklık Kontrolü",
+    description: "Hassas sıcaklık kontrolü gerektiren laboratuvar uygulamaları için tasarlanmış kompakt chiller çözümü.",
+    secondaryLabel: "TEKLİF AL",
+  },
+  "xray-flux": {
+    category: "XRF Numune Hazırlama",
+    description: "XRF numune hazırlama süreçlerinde kullanılan lityum tetraborat bazlı ergitme kimyasalları.",
+    secondaryLabel: "BİLGİ İSTE",
+  },
+};
 
 export function ProductShowcase() {
   const reduce = useReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const root = sectionRef.current;
+    if (!root || reduce) return;
+    let ctx: { revert: () => void } | undefined;
+    let cancelled = false;
+
+    Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(([{ default: gsap }, { ScrollTrigger }]) => {
+      if (cancelled || !sectionRef.current) return;
+      gsap.registerPlugin(ScrollTrigger);
+      ctx = gsap.context(() => {
+        root.querySelectorAll<HTMLElement>("[data-product-row]").forEach((row) => {
+          const visual = row.querySelector<HTMLElement>("[data-product-visual]");
+          const photo = row.querySelector<HTMLElement>(".product-photo");
+          const signal = row.querySelector<HTMLElement>(".product-signal");
+          const scan = row.querySelector<HTMLElement>(".product-scan");
+          const index = row.querySelector<HTMLElement>(".product-index");
+          const copy = row.querySelector<HTMLElement>("[data-product-copy]");
+          const cta = row.querySelector<HTMLElement>("[data-product-cta]");
+
+          gsap.set(row, { autoAlpha: 0, y: 36 });
+          if (visual) gsap.set(visual, { clipPath: "inset(0 100% 0 0)" });
+          if (photo) gsap.set(photo, { filter: "blur(10px)", scale: 1.04 });
+          gsap.set([index, copy, cta].filter(Boolean), { opacity: 0, y: 14 });
+          if (signal) gsap.set(signal, { scaleX: 0, transformOrigin: "left center" });
+
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: row,
+              start: "top 78%",
+              once: true,
+            },
+          });
+
+          tl.to(row, { autoAlpha: 1, y: 0, duration: 0.45, ease: "power2.out" });
+
+          if (index) tl.to(index, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" });
+          if (signal) tl.to(signal, { scaleX: 1, duration: 0.45, ease: "power2.out" }, 0.08);
+          if (visual) tl.to(visual, { clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power3.out" }, 0.16);
+          if (photo) tl.to(photo, { filter: "blur(0px)", scale: 1, duration: 0.85, ease: "power2.out" }, 0.28);
+          if (scan) {
+            tl.fromTo(
+              scan,
+              { top: "0%", opacity: 0.7 },
+              { top: "100%", opacity: 0, duration: 0.65, ease: "power1.inOut" },
+              0.48,
+            );
+          }
+          if (copy) tl.to(copy, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, 0.42);
+          if (cta) tl.to(cta, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.58);
+        });
+      }, root);
+    });
+
+    return () => {
+      cancelled = true;
+      ctx?.revert();
+    };
+  }, [reduce]);
+
   return (
-    <section className="bg-[var(--frekans-offwhite)] py-20 md:py-28">
+    <section ref={sectionRef} className="bg-[var(--frekans-offwhite)] py-8 md:py-12">
       <div className="container-wide">
-        <p className="eyebrow mb-4">ÇÖZÜMLER</p>
-        <MaskedHeading className="section-title text-[var(--frekans-navy)]" lines={["Laboratuvar", "çözümleri"]} />
-        <div className="mt-16 space-y-20">
-          {products.map((p, i) => (
-            <article key={p.slug} className={cn("grid items-center gap-10 lg:grid-cols-2", i % 2 === 1 && "lg:[&>*:first-child]:order-2")}>
-              <motion.div
-                initial={reduce ? false : { opacity: 0, scale: 0.96 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="relative aspect-[5/4] overflow-hidden rounded-[10px] border border-[var(--frekans-border)] bg-white"
+        <div className="space-y-[18vh] md:space-y-[28vh]">
+          {products.map((p, i) => {
+            const copy = featuredCopy[p.slug];
+            const reverse = i % 2 === 1;
+            return (
+              <article
+                key={p.slug}
+                data-product-row
+                className={cn(
+                  "product-row-staged grid min-h-[88svh] items-center gap-8 lg:gap-14",
+                  reverse
+                    ? "lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:[&>*:first-child]:order-2"
+                    : "lg:grid-cols-[minmax(0,1.22fr)_minmax(0,0.78fr)]",
+                )}
               >
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background:
-                      p.accent === "green"
-                        ? "linear-gradient(145deg,#EEF3F5 0%,#d9efe4 45%,#0B2857 160%)"
-                        : "linear-gradient(145deg,#F6F8FA 0%,#d5deea 50%,#061A39 140%)",
-                  }}
-                />
-                <svg viewBox="0 0 400 320" className="absolute inset-0 h-full w-full opacity-80" aria-hidden>
-                  <rect x="70" y="70" width="260" height="180" rx="6" fill="none" stroke="#0B2857" strokeOpacity="0.25" />
-                  <path d="M90 180 C140 120, 180 240, 230 160 C280 90, 320 200, 350 150" fill="none" stroke="#00A84F" strokeWidth="2" />
-                  <circle cx="230" cy="160" r="4" fill="#00A84F" />
-                </svg>
-                <span className="absolute left-5 top-5 font-mono text-xs tracking-[0.2em] text-[var(--frekans-navy)]/50">{p.number}</span>
-              </motion.div>
-              <div>
-                <p className="eyebrow">{p.category}</p>
-                <h3 className="product-title mt-3 text-[var(--frekans-navy)]">{p.title}</h3>
-                <p className="mt-4 max-w-lg text-[var(--frekans-muted)]">{p.short}</p>
-                <div className="mt-7">
-                  <Button href={`/urunler/${p.slug}`}>DETAYLARI İNCELE</Button>
+                <div data-product-visual>
+                  <ProductVisual
+                    slug={p.slug}
+                    showIndex={p.number}
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 60vw"
+                    className="aspect-[4/3] min-h-[240px] w-full md:aspect-[5/4] md:min-h-[420px] xl:min-h-[540px]"
+                  />
                 </div>
-              </div>
-            </article>
-          ))}
+                <div>
+                  <div data-product-copy>
+                    <p className="eyebrow">{copy?.category ?? p.category}</p>
+                    <h3 className="product-title mt-3 text-[var(--frekans-navy)]">{p.title}</h3>
+                    <p className="mt-4 max-w-lg text-[17px] text-[var(--frekans-muted)] md:text-[18px]">
+                      {copy?.description ?? p.short}
+                    </p>
+                  </div>
+                  <div data-product-cta className="mt-7 flex flex-wrap gap-3">
+                    <Button href={`/urunler/${p.slug}`}>ÜRÜNÜ İNCELE</Button>
+                    <Button href={`/iletisim?urun=${p.slug}`} variant="secondary">
+                      {copy?.secondaryLabel ?? "TEKLİF AL"}
+                    </Button>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
         <div className="mt-16">
           <Link href="/urunler" className="font-mono text-xs tracking-[0.18em] text-[var(--frekans-navy)] hover:text-[var(--frekans-green-dark)]">

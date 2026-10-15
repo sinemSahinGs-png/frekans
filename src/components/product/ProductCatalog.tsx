@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { Product } from "@/data/products";
 import type { Category } from "@/data/categories";
+import { ProductVisual } from "@/components/product/ProductVisual";
 import { cn } from "@/lib/utils";
 
 export function ProductCatalog({ products, categories }: { products: Product[]; categories: Category[] }) {
@@ -38,14 +39,22 @@ export function ProductCatalog({ products, categories }: { products: Product[]; 
           <Link
             key={p.slug}
             href={`/urunler/${p.slug}`}
-            className="group border border-[var(--frekans-border)] bg-white p-6 transition-colors hover:border-[var(--frekans-green)]"
+            className="group overflow-hidden border border-[var(--frekans-border)] bg-white transition-colors hover:border-[var(--frekans-green)]"
           >
-            <p className="font-mono text-xs text-[var(--frekans-muted)]">{p.number} / {p.category}</p>
-            <h2 className="mt-3 font-display text-2xl text-[var(--frekans-navy)]">{p.title}</h2>
-            <p className="mt-3 line-clamp-3 text-sm text-[var(--frekans-muted)]">{p.short}</p>
-            <p className="mt-5 font-mono text-xs tracking-[0.16em] text-[var(--frekans-navy)] group-hover:translate-x-1 transition-transform">
-              DETAYLAR →
-            </p>
+            <ProductVisual
+              slug={p.slug}
+              showIndex={p.number}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="aspect-[5/4] rounded-none border-0"
+            />
+            <div className="p-6">
+              <p className="font-mono text-xs text-[var(--frekans-muted)]">{p.number} / {p.category}</p>
+              <h2 className="mt-3 font-display text-2xl text-[var(--frekans-navy)]">{p.title}</h2>
+              <p className="mt-3 line-clamp-3 text-sm text-[var(--frekans-muted)]">{p.short}</p>
+              <p className="mt-5 font-mono text-xs tracking-[0.16em] text-[var(--frekans-navy)] transition-transform group-hover:translate-x-1">
+                DETAYLAR →
+              </p>
+            </div>
           </Link>
         ))}
       </div>
