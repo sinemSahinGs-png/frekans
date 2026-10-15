@@ -1,35 +1,80 @@
 "use client";
 
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
-import { FrequencyField } from "@/components/visual/FrequencyField";
-import { FrekansWave } from "@/components/visual/FrekansWave";
-import { LabGrid } from "@/components/visual/LabGrid";
 
 export function Hero() {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, -40]);
   const opacity = useTransform(scrollYProgress, [0, 0.7], [1, 0.15]);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    const section = ref.current;
+    if (!video || !section) return;
+
+    if (reduce) {
+      video.pause();
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.15 },
+    );
+
+    io.observe(section);
+    return () => io.disconnect();
+  }, [reduce]);
+
   return (
-    <section ref={ref} className="relative min-h-[90svh] overflow-hidden pt-24 md:min-h-[100svh]">
-      <LabGrid />
-      <FrequencyField className="pointer-events-none absolute inset-x-0 bottom-[18%] h-40 w-full opacity-70" />
-      <motion.div style={reduce ? undefined : { y, opacity }} className="container-wide relative z-10 grid items-center gap-10 pb-16 pt-10 lg:grid-cols-[1.15fr_0.85fr] lg:pt-16">
-        <div>
+    <section ref={ref} className="relative min-h-[90svh] overflow-hidden bg-[var(--frekans-navy-deep)] pt-24 md:min-h-[100svh]">
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover"
+        autoPlay={!reduce}
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+      >
+        <source src="/hero.mp4" type="video/mp4" />
+      </video>
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[var(--frekans-navy-deep)]/82 via-[var(--frekans-navy-deep)]/55 to-[var(--frekans-navy)]/30"
+        aria-hidden
+      />
+      <div
+        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[var(--frekans-navy-deep)]/75 via-transparent to-[var(--frekans-navy-deep)]/45"
+        aria-hidden
+      />
+
+      <motion.div
+        style={reduce ? undefined : { y, opacity }}
+        className="container-wide relative z-10 flex min-h-[calc(90svh-6rem)] items-center pb-16 pt-10 md:min-h-[calc(100svh-6rem)] lg:pt-16"
+      >
+        <div className="w-full max-w-[1100px]">
           <motion.p
-            className="eyebrow mb-6"
+            className="eyebrow mb-6 !text-white/70"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.1, duration: 0.5 }}
           >
             LABORATORY / PRECISION / SIGNAL
           </motion.p>
-          <h1 className="hero-title text-[var(--frekans-navy)]">
-            {["LABORATUVAR", "TEKNOLOJİSİNDE", "DOĞRU FREKANS."].map((line, i) => (
+          <h1 className="hero-title text-white">
+            {["LABORATUVARINIZA", "UYGUN", "FREKANS."].map((line, i) => (
               <span key={line} className="block overflow-hidden">
                 <motion.span
                   className="block"
@@ -43,7 +88,7 @@ export function Hero() {
             ))}
           </h1>
           <motion.p
-            className="mt-6 max-w-xl text-[17px] text-[var(--frekans-muted)] md:text-[19px]"
+            className="mt-6 max-w-xl text-[17px] text-white/78 md:text-[19px]"
             initial={reduce ? false : { opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.95, duration: 0.6 }}
@@ -56,11 +101,19 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 2.15, duration: 0.55 }}
           >
-            <Button href="/urunler">ÜRÜNLERİ KEŞFET</Button>
-            <Button href="/iletisim" variant="secondary">BİZE ULAŞIN</Button>
+            <Button href="/urunler" className="bg-white text-[var(--frekans-navy)] hover:bg-[var(--frekans-green)] hover:text-white">
+              ÜRÜNLERİ KEŞFET
+            </Button>
+            <Button
+              href="/iletisim"
+              variant="secondary"
+              className="border-white/30 bg-white/8 text-white hover:border-white hover:bg-white hover:text-[var(--frekans-navy)]"
+            >
+              BİZE ULAŞIN
+            </Button>
           </motion.div>
           <motion.div
-            className="mt-10 flex gap-8 font-mono text-[0.65rem] tracking-[0.18em] text-[var(--frekans-muted)]"
+            className="mt-10 flex gap-8 font-mono text-[0.65rem] tracking-[0.18em] text-white/55"
             initial={reduce ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2.4 }}
@@ -69,14 +122,6 @@ export function Hero() {
             <span>CHILLER</span>
             <span>XRF SARF</span>
           </motion.div>
-        </div>
-        <div className="relative">
-          <motion.div initial={reduce ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.8 }}>
-            <FrekansWave interactive amplitude={1} />
-          </motion.div>
-          <p className="mt-4 text-center font-mono text-[0.62rem] tracking-[0.2em] text-[var(--frekans-muted)]">
-            FREKANS TEKNİK CİHAZLAR LTD. ŞTİ.
-          </p>
         </div>
       </motion.div>
     </section>

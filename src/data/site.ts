@@ -13,7 +13,7 @@ export const site = {
   ],
   mapsQuery:
     "Mecidiye Mah. Bestekar Şevki Bey Sokak No:36/2 Balmumcu Beşiktaş İstanbul",
-  domain: "https://frekanslab.com",
+  domain: "https://frekanslab.com.tr",
   nav: [
     { href: "/urunler", label: "ÜRÜNLER" },
     { href: "/uygulamalar", label: "UYGULAMALAR" },

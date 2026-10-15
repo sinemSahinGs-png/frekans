@@ -27,7 +27,7 @@ const ibm = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://frekanslab.com"),
+  metadataBase: new URL("https://frekanslab.com.tr"),
   title: {
     default: "Frekans Teknik Cihazlar | Laboratuvar Cihazları ve Teknik Çözümler",
     template: "%s | Frekans",
@@ -40,11 +40,11 @@ export const metadata: Metadata = {
       "Frekans Teknik Cihazlar; laboratuvar cihazları, teknik çözümler, XRF sarf malzemeleri ve uygulama desteği sunar.",
     locale: "tr_TR",
     type: "website",
-    url: "https://frekanslab.com",
+    url: "https://frekanslab.com.tr",
     siteName: "Frekans Teknik Cihazlar",
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "https://frekanslab.com" },
+  alternates: { canonical: "https://frekanslab.com.tr" },
 };
 
 export default function RootLayout({

@@ -3,6 +3,6 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
-    sitemap: "https://frekanslab.com/sitemap.xml",
+    sitemap: "https://frekanslab.com.tr/sitemap.xml",
   };
 }

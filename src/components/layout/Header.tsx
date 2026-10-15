@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FrekansLogo } from "@/components/brand/FrekansLogo";
 import { Button } from "@/components/ui/Button";
 import { site } from "@/data/site";
 import { cn } from "@/lib/utils";
 
 export function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const inverted = pathname === "/" && !scrolled && !open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -34,34 +37,48 @@ export function Header() {
         )}
       >
         <div className="container-wide flex h-[72px] items-center justify-between md:h-20">
-          <FrekansLogo compact={scrolled} />
+          <FrekansLogo compact={scrolled} inverted={inverted} />
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Ana menü">
             {site.nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-mono text-[0.68rem] tracking-[0.18em] text-[var(--frekans-navy)]/80 transition-colors hover:text-[var(--frekans-green-dark)]"
+                className={cn(
+                  "font-mono text-[0.68rem] tracking-[0.18em] transition-colors",
+                  inverted
+                    ? "text-white/80 hover:text-white"
+                    : "text-[var(--frekans-navy)]/80 hover:text-[var(--frekans-green-dark)]",
+                )}
               >
                 {item.label}
               </Link>
             ))}
           </nav>
           <div className="hidden lg:block">
-            <Button href="/iletisim" className="!min-h-11 !px-5">
+            <Button
+              href="/iletisim"
+              className={cn(
+                "!min-h-11 !px-5",
+                inverted && "bg-white text-[var(--frekans-navy)] hover:bg-[var(--frekans-green)] hover:text-white",
+              )}
+            >
               TEKLİF AL
             </Button>
           </div>
           <button
             type="button"
-            className="flex h-11 w-11 items-center justify-center rounded-[8px] border border-[var(--frekans-border)] lg:hidden"
+            className={cn(
+              "flex h-11 w-11 items-center justify-center rounded-[8px] border lg:hidden",
+              inverted ? "border-white/30" : "border-[var(--frekans-border)]",
+            )}
             aria-label={open ? "Menüyü kapat" : "Menüyü aç"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
             <span className="flex flex-col gap-1.5">
-              <span className={cn("block h-px w-5 bg-[var(--frekans-navy)] transition", open && "translate-y-[7px] rotate-45")} />
-              <span className={cn("block h-px w-5 bg-[var(--frekans-navy)] transition", open && "opacity-0")} />
-              <span className={cn("block h-px w-5 bg-[var(--frekans-navy)] transition", open && "-translate-y-[7px] -rotate-45")} />
+              <span className={cn("block h-px w-5 transition", inverted ? "bg-white" : "bg-[var(--frekans-navy)]", open && "translate-y-[7px] rotate-45")} />
+              <span className={cn("block h-px w-5 transition", inverted ? "bg-white" : "bg-[var(--frekans-navy)]", open && "opacity-0")} />
+              <span className={cn("block h-px w-5 transition", inverted ? "bg-white" : "bg-[var(--frekans-navy)]", open && "-translate-y-[7px] -rotate-45")} />
             </span>
           </button>
         </div>
