@@ -160,20 +160,3 @@ body {
 .product-signal {
   transform: scaleX(0);
 }
-
-.product-row-staged {
-  opacity: 0;
-  visibility: hidden;
-}
-
-[data-intro-step]:not(:first-child) {
-  opacity: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .product-row-staged,
-  [data-intro-step] {
-    opacity: 1;
-    visibility: visible;
-  }
-}
