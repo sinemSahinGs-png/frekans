@@ -1,0 +1,74 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getProduct, products } from "@/data/products";
+import { Button } from "@/components/ui/Button";
+
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = getProduct(slug);
+  if (!product) return { title: "Urun" };
+  return { title: product.title, description: product.short };
+}
+
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const product = getProduct(slug);
+  if (!product) notFound();
+
+  return (
+    <div className="container-wide grid gap-12 pb-24 pt-28 lg:grid-cols-[1.05fr_0.95fr] md:pt-32">
+      <div className="lg:sticky lg:top-28 lg:self-start">
+        <div className="relative aspect-[5/4] overflow-hidden rounded-[10px] border border-[var(--frekans-border)] bg-[var(--frekans-lab)]">
+          <svg viewBox="0 0 400 320" className="h-full w-full" aria-hidden>
+            <rect x="60" y="60" width="280" height="200" rx="6" fill="none" stroke="#0B2857" strokeOpacity="0.25" />
+            <path d="M80 180 C140 110, 200 250, 250 150 C300 70, 340 210, 370 140" fill="none" stroke="#00A84F" strokeWidth="2.2" />
+          </svg>
+        </div>
+      </div>
+      <div>
+        <p className="eyebrow">{product.category}</p>
+        <h1 className="product-title mt-3 text-[var(--frekans-navy)]">{product.title}</h1>
+        <p className="mt-5 text-lg text-[var(--frekans-muted)]">{product.short}</p>
+        <section className="mt-10">
+          <h2 className="font-display text-2xl text-[var(--frekans-navy)]">Genel bakis</h2>
+          <p className="mt-3 text-[var(--frekans-muted)]">{product.overview}</p>
+        </section>
+        {product.applications.length ? (
+          <section className="mt-10">
+            <h2 className="font-display text-2xl text-[var(--frekans-navy)]">Uygulamalar</h2>
+            <ul className="mt-3 list-disc pl-5 text-[var(--frekans-muted)]">
+              {product.applications.map((a) => (
+                <li key={a}>{a}</li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+        {product.specs.length ? (
+          <section className="mt-10">
+            <h2 className="font-display text-2xl text-[var(--frekans-navy)]">Teknik bilgi</h2>
+            <dl className="mt-4 divide-y divide-[var(--frekans-border)]">
+              {product.specs.map((s) => (
+                <div key={s.label} className="flex justify-between gap-4 py-3 font-mono text-sm">
+                  <dt className="text-[var(--frekans-muted)]">{s.label}</dt>
+                  <dd>{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ) : null}
+        <section className="mt-10">
+          <h2 className="font-display text-2xl text-[var(--frekans-navy)]">Destek</h2>
+          <p className="mt-3 text-[var(--frekans-muted)]">Teknik bilgi ve teklif icin iletisim formunu kullanabilirsiniz.</p>
+        </section>
+        <div className="mt-10 flex flex-wrap gap-3">
+          <Button href={`/iletisim?urun=${product.slug}`}>TEKLIF AL</Button>
+          <Button href={`/iletisim?urun=${product.slug}`} variant="secondary">TEKNIK BILGI ISTE</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
