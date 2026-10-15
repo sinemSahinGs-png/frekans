@@ -100,14 +100,14 @@ body {
 .hero-title {
   font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 600;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
-  font-size: clamp(1.7rem, 8vw, 3.1rem);
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  font-size: clamp(2.15rem, 9vw, 3.6rem);
 }
 
 @media (min-width: 768px) {
   .hero-title {
-    font-size: clamp(2.75rem, 5.2vw, 5.25rem);
+    font-size: clamp(3.4rem, 6.2vw, 5.6rem);
   }
 }
 

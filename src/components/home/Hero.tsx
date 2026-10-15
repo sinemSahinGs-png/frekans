@@ -74,7 +74,7 @@ export function Hero() {
             LABORATORY / PRECISION / SIGNAL
           </motion.p>
           <h1 className="hero-title text-white">
-            {["LABORATUVARINIZA", "UYGUN", "FREKANS."].map((line, i) => (
+            {["Laboratuvarınıza", "uygun frekans."].map((line, i) => (
               <span key={line} className="block overflow-hidden">
                 <motion.span
                   className="block"

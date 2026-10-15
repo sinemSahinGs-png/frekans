@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FrekansEmblem } from "@/components/brand/FrekansEmblem";
 import { cn } from "@/lib/utils";
 
 type Props = { href?: string; className?: string; compact?: boolean; inverted?: boolean };
@@ -6,15 +7,25 @@ type Props = { href?: string; className?: string; compact?: boolean; inverted?: 
 export function FrekansLogo({ href = "/", className, compact, inverted }: Props) {
   const mark = (
     <span className={cn("inline-flex items-center gap-3", className)}>
-      <svg width={compact ? 42 : 52} height={compact ? 28 : 34} viewBox="0 0 78 50" fill="none" aria-hidden>
-        <path d="M4 32 C16 12, 28 12, 40 32 C52 52, 64 52, 74 32" stroke="#00A84F" strokeWidth="3.4" strokeLinecap="round" />
-        <path d="M4 20 C16 40, 28 40, 40 20 C52 0, 64 0, 74 20" stroke={inverted ? "#ffffff" : "#0B2857"} strokeWidth="3.4" strokeLinecap="round" />
-      </svg>
+      <FrekansEmblem size={compact ? 34 : 42} inverted={inverted} />
       <span className="flex flex-col leading-none">
-        <span className={cn("font-display text-[1.05rem] font-semibold tracking-[0.22em] md:text-[1.2rem]", inverted ? "text-white" : "text-[var(--frekans-navy)]")}>FREKANS</span>
+        <span
+          className={cn(
+            "font-display font-semibold tracking-[0.2em]",
+            compact ? "text-[0.95rem] md:text-[1.05rem]" : "text-[1.05rem] md:text-[1.2rem]",
+            inverted ? "text-white" : "text-[var(--frekans-navy)]",
+          )}
+        >
+          FREKANS
+        </span>
         {!compact ? (
-          <span className={cn("mt-1 hidden font-mono text-[0.52rem] tracking-[0.16em] sm:block", inverted ? "text-white/70" : "text-[var(--frekans-muted)]")}>
-            TEKNIK CIHAZLAR LTD. STI.
+          <span
+            className={cn(
+              "mt-1 hidden font-mono text-[0.52rem] tracking-[0.14em] sm:block",
+              inverted ? "text-white/70" : "text-[var(--frekans-muted)]",
+            )}
+          >
+            TEKNİK CİHAZLAR LTD. ŞTİ.
           </span>
         ) : null}
       </span>
